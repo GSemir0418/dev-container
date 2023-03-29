@@ -1,13 +1,13 @@
-# FROM archlinux:base-devel
+FROM archlinux:base-devel
 # 支持 arm64 架构
-FROM menci/archlinuxarm:base-devel
+# FROM menci/archlinuxarm:base-devel
 # 使用 WORKDIR 指令可以来指定工作目录（或者称为当前目录），以后各层的当前目录就被改为指定的目录，如该目录不存在， WORKDIR 会帮你建立目录。
 WORKDIR /tmp
 ENV SHELL /bin/bash
 ENV UPDATE_TIME 20220708T10:55:00+08:00
 # -S 安装 -y 自动回答yes -u 更新包
 RUN yes | pacman -Syu
-RUN yes | pacman -S git zsh curl tree which vim openssh
+RUN yes | pacman -S git zsh curl tree which vim openssh dos2unix
 # 管理配置文件
 RUN mkdir -p /root/.config
 VOLUME [ "/root/.config", "/root/repos", "/root/.vscode-server/extensions", "/root/go/bin", "/root/.local/share/pnpm", "/usr/local/rvm/gems", "/root/.ssh" ]
@@ -19,6 +19,7 @@ ENV SHELL /bin/zsh
 RUN git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 RUN git clone https://github.com/zsh-users/zsh-autosuggestions.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 ADD .zshrc /root/.zshrc
+RUN dos2unix /root/.zshrc
 # end
 
 # Ruby
